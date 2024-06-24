@@ -122,11 +122,7 @@ public class OrderPage {
     // Проверка наличия элемента "Заказ оформлен" на всплывающем окне
     public boolean findElementOrderPass() {
         WebElement element = driver.findElement(orderPass);
-        if (element != null) {
-            return true;
-        } else {
-            return false;
-        }
+        return element.isDisplayed();
     }
 
     public boolean checkOpenOrderPage() {
