@@ -48,7 +48,7 @@ public class Order {
 
     @Before
     public void setup() {
-        driver = WebDriverFactory.getWebDriver(System.getProperty("browser", "chrome"));
+        driver = WebDriverFactory.getWebDriver(System.getProperty("browser", "firefox"));
         driver.get("https://qa-scooter.praktikum-services.ru/");
     }
 
