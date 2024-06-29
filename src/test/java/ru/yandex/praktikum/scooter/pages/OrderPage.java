@@ -4,6 +4,9 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import java.time.Duration;
 
 public class OrderPage {
@@ -29,6 +32,7 @@ public class OrderPage {
 
     private By yesButton = By.xpath("//button[text()='Да']");
     private By orderPass = By.className("Order_ModalHeader__3FDaJ");
+    private By textAboutOrderWithNumber = By.xpath("//div[@class='Order_Text__2broi']");
 
     public OrderPage(WebDriver driver) {
         this.driver = driver;
@@ -101,6 +105,23 @@ public class OrderPage {
         button.click();
     }
 
+    public boolean getStatusNumber() {
+        WebElement element = driver.findElement(textAboutOrderWithNumber);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.visibilityOf(element));
+        String fullText = element.getText();
+//  парсинг строки для получения номера заказа
+        String orderNumber = fullText.substring(14, 20);
+//  регулярное выражение для проверки формата
+        String numberRegex = "^\\d{6}$";
+// компилирование регулярного выражения в шаблон
+        Pattern pattern = Pattern.compile(numberRegex);
+// создание объекта Matcher для проверки строки
+        Matcher matcher = pattern.matcher(orderNumber);
+// проверка строки на соответствие регулярному выражению
+        return matcher.matches();
+    }
+
     public void fillingFormForWhom(String name, String surname, String address, String metroStation, String phone) {
         setName(name);
         setSurname(surname);
@@ -123,6 +144,10 @@ public class OrderPage {
     public boolean findElementOrderPass() {
         WebElement element = driver.findElement(orderPass);
         return element.isDisplayed();
+    }
+
+    public boolean checkSuccessOrderCreation() {
+        return getStatusNumber() && findElementOrderPass();
     }
 
     public boolean checkOpenOrderPage() {

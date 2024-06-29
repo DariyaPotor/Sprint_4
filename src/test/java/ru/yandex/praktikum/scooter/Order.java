@@ -61,7 +61,8 @@ public class Order {
         orderPage.fillingFormForWhom(name, surname, address, metroStation, phone);
         orderPage.fillingFormAboutRent(data, time, color, comment);
 
-        assertTrue(orderPage.findElementOrderPass());
+        assertTrue(orderPage.checkSuccessOrderCreation());
+
     }
 
     @Test
